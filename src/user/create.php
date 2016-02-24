@@ -47,7 +47,7 @@ try {
 }
 
 if ($stmt->rowCount() < 1 || !$success) {
-    http_response_code(500);
+    http_response_code(400);
     echo json_encode([
         'message' => 'Failed to create account.'
     ]);
