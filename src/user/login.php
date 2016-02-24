@@ -45,7 +45,7 @@ try {
 
 $passwordHash = $stmt->fetchColumn(0);
 if (!$success || !$passwordHash || !password_verify($parameters['password'], $passwordHash)) {
-    http_response_code(401);
+    http_response_code(400);
     echo json_encode([
         'message' => 'Failed to log in.'
     ]);
