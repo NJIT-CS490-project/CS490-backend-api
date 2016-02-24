@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $requestBody = file_get_contents('php://input');
-$parameters = json_decode($requestBody, true);
+$parameters  = json_decode($requestBody, true);
 
 if (!array_key_exists('username', $parameters)) {
     http_response_code(400);
@@ -33,11 +33,8 @@ $pdo = new PDO('mysql:host=' . MYSQL_HOSTNAME . ';dbname=' . MYSQL_DATABASE, MYS
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 ]);
 
-$stmt = $pdo->prepare('INSERT INTO `User` (`username`, `password`) VALUES (:username, :password)');
+$stmt = $pdo->prepare('SELECT `password` FROM `User` WHERE `username` = :username LIMIT 1');
 $stmt->bindValue('username', $parameters['username'], PDO::PARAM_STR);
-
-$password = password_hash($parameters['password'], PASSWORD_DEFAULT);
-$stmt->bindValue('password', $password, PDO::PARAM_STR);
 
 try {
     $stmt->execute();
@@ -46,13 +43,12 @@ try {
     $success = false;
 }
 
-if ($stmt->rowCount() < 1 || !$success) {
-    http_response_code(500);
+$passwordHash = $stmt->fetchColumn(0);
+if (!$success || !$passwordHash || !password_verify($parameters['password'], $passwordHash)) {
+    http_response_code(401);
     echo json_encode([
-        'message' => 'Failed to create account.'
+        'message' => 'Failed to log in.'
     ]);
-    die();
+} else {
+    http_response_code(200);
 }
-
-http_response_code(200);
-die();
