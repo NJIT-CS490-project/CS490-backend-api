@@ -68,3 +68,8 @@ Example Response (user does not exist/password does not match):
     "message": "Failed to log in."
 }
 ```
+
+## Base URL
+
+`https://web.njit.edu/~mjc55/CS490`
+`
