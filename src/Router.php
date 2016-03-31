@@ -94,7 +94,7 @@ class Router {
                     return new Response(json_encode($response));
                 }
             default:
-                return new Response(json_encode($resonse));
+                return new Response(json_encode($response));
         };
     }
 

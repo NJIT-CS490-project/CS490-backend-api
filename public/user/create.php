@@ -1,8 +1,8 @@
 <?php
 
 require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../Router.php');
-require_once(__DIR__ . '/../HTTPException.php');
+require_once(__DIR__ . '/../../src/Router.php');
+require_once(__DIR__ . '/../../src/HTTPException.php');
 
 $router = new Router();
 $router->on('post', function ($request, $services) {

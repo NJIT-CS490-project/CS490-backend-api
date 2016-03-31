@@ -9,7 +9,9 @@ class Map implements ArrayAccess, Serializable {
      * @param array $base The values this bag should contain.
      */
     public function __construct ($base = array()) {
-			$this->values = array_merge($this->values, $base);
+			if (gettype($base) === 'array') {
+				$this->values = array_merge($this->values, $base);
+			}
     }
 
     public function has ($key) {
