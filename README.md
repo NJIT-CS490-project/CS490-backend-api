@@ -1,7 +1,7 @@
 # CS490 Project - Backend API
 
 All requests should start with the following base url:
-```https://web.njit.edu/~mjc55/CS490/public/```
+``https://web.njit.edu/~mjc55/CS490/public/``
 
 | Path                          | Meaning                                  |
 |-------------------------------|------------------------------------------|
