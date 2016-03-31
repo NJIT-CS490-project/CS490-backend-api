@@ -104,6 +104,7 @@ Sample Request: (start and end are unix timestamps)
 	"end":       5678,
 	"location": "My Place"
 }
+```
 
 ## ```GET event/list.php```
 Gets all events.
