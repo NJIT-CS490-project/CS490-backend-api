@@ -1,0 +1,12 @@
+{
+    "name": "matt/cs490-backend-api",
+    "require": {
+        "phpunit/phpunit": "^5.2"
+    },
+    "authors": [
+        {
+            "name": "Matthew Cifelli",
+            "email": "matthewcifelli@gmail.com"
+        }
+    ]
+}
