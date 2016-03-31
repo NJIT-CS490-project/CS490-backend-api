@@ -3,9 +3,9 @@
 class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function provider__construct () {
-        return [
-            [ 'a', 'b', [ 'a' => 'b', 'b' => 'c'], [ 'c' => 'd', 'd' => 'e']]
-        ];
+        return array(
+            array( 'a', 'b', array( 'a' => 'b', 'b' => 'c'), array( 'c' => 'd', 'd' => 'e'))
+				);
     }
 
     /**
@@ -17,11 +17,10 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($req->method, $method);
 
         foreach ($headers as $key => $value) {
-            echo "{helllo}";
             $this->assertEquals($req->headers[$key], $value);
         }
 
-        foreach ($headers as $params => $value) {
+        foreach ($params as $key => $value) {
             $this->assertEquals($req->params[$key], $value);
         }
     }

@@ -3,11 +3,11 @@
 class MapTest extends PHPUnit_Framework_TestCase {
 
     public function provider__construct () {
-        return [
-            [
-                [ 'a' => 'b'], ['a' => 'c']
-            ]
-        ];
+        return array(
+            array(
+                array( 'a' => 'b'), array('a' => 'c')
+							)
+				);
     }
 
     /**

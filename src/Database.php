@@ -7,9 +7,9 @@ class Database {
             'mysql:host=' . MYSQL_HOSTNAME . ';dbname=' . MYSQL_DATABASE,
             MYSQL_USERNAME,
             MYSQL_PASSWORD,
-            [
+            array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]
+						)
         );
     }
 }

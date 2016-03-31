@@ -3,27 +3,33 @@
 require_once(__DIR__ . '/HTTPException.php');
 require_once(__DIR__ . '/Request.php');
 require_once(__DIR__ . '/Response.php');
+require_once(__DIR__ . '/Database.php');
 
 class Router {
 
-    private $services        = [];
-    private $handlers        = [];
-    private $views           = [];
-    private $errorHandlers   = [];
+    private $services        = array();
+    private $handlers        = array();
+    private $views           = array();
+    private $errorHandlers   = array();
 
     public function __construct (
-        $services      = [],
-        $handlers      = [],
-        $views         = [],
-        $errorHandlers = []
+        $services      = array(),
+        $handlers      = array(),
+        $views         = array(),
+        $errorHandlers = array()
     ) {
         $this->services = array_merge($services, $this->services);
+				$this->loadServices();
         $this->handlers = array_merge($handlers, $this->handlers);
     }
 
     public function registerService ($name, $service) {
         $this->services[$name] = $service;
     }
+
+		public function loadServices () {
+			$this->registerService('pdo', Database::generate());
+		}
 
     public function on ($method, $handler) {
         $this->handlers[$method] = $handler;
@@ -37,30 +43,35 @@ class Router {
                 $request = Request::generate();
             }
 
-            if (!array_key_exists($request->method, $this->handlers)) {
-                $response = $this->handlers[$request->method]($request, $this->services);
-            }
-        } catch (HTTPException $e) {
-            $response = new Response($e, $e->getCode());
+						$request->method = strtolower($request->method);
+									
+						if (!array_key_exists($request->method, $this->handlers) || $this->handlers[$request->method] === null) {
+							throw new MethodNotAllowedException();
+						}
+						
+						$handler = $this->handlers[$request->method];
+						$response = $handler($request, $this->services);
+            
+        } catch (HTTPException $e) {	
+					$response = $e;
         } catch (Exception $e) {
-            $e = new InternalServerException(null, null, $e);
-            $response = new Response($e, $e->getCode());
+						throw $e;
+            $response = new InternalServerException(null, null, $e);
         }
+
 
         $response = $this->normalizeResponse($response);
 
         http_response_code($response->code);
 
-        foreach ($response as $key => $value) {
+        foreach ($response->headers as $key => $value) {
             header($key . ':' . $value);
         }
 
-        var_dump($response);
-
-        echo json_encode($response);
+        echo $this->encodeResponse($response);
     }
 
-    private function renderResponse ($response = null) {
+    private function normalizeResponse ($response = null) {
         if ($response === null) {
             return new Response();
         }
@@ -74,7 +85,12 @@ class Router {
             case 'object':
                 if (is_a($response, 'Response')) {
                     return $response;
-                } else {
+                } else if (is_a($response, 'HTTPException')) {
+										return new Response(array(
+												'message' => $response->getMessage(),
+												'code'    => $response->getCode()
+										), $response->getCode());
+								} else {
                     return new Response(json_encode($response));
                 }
             default:
@@ -82,4 +98,17 @@ class Router {
         };
     }
 
+		private function encodeResponse ($response) {
+			if ($response->body === null) {
+				return '';
+			}
+			
+			switch (gettype($response->body)) {
+				case 'array':
+				case 'object':
+					return json_encode($response->body);
+				default:
+					return $response->body;
+			}
+		}
 }

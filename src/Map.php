@@ -1,19 +1,19 @@
 <?php
 
-class Map implements ArrayAccess, Serializable, JsonSerializable {
+class Map implements ArrayAccess, Serializable {
 
-    private $values = [];
+    private $values = array();
 
     /**
      * Creates a new Bag of values.
      * @param array $base The values this bag should contain.
      */
-    public function __construct ($base = []) {
-        $this->values = array_merge($this->values, $base);
+    public function __construct ($base = array()) {
+			$this->values = array_merge($this->values, $base);
     }
 
     public function has ($key) {
-        return array_key_exists($key, $this->values);
+			return array_key_exists($key, $this->values);
     }
 
     public function get ($key, $default = null) {
@@ -24,11 +24,11 @@ class Map implements ArrayAccess, Serializable, JsonSerializable {
         }
     }
 
-    public function getOrThrow ($key) {
-        if (!$this->has($key)) {
-            return $this->values($key);
+    public function mustHave ($key) {
+        if ($this->has($key)) {
+					return $this->values[$key];
         } else {
-            throw Exception('Failed to find parameter.');
+					throw new ParameterNotFoundException('Failed to find parameter: ' . $key);
         }
     }
 

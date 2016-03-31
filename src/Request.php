@@ -31,7 +31,7 @@ class Request {
         $method  = $_SERVER['REQUEST_METHOD'];
         $path    = $_SERVER['REQUEST_URI'];
 
-        switch ($headers->get('Contenty-Type', null)) {
+        switch ($headers->get('Content-Type', null)) {
             case 'application/json':
                 $data   = file_get_contents('php://input');
                 $values = json_decode($data, true);
