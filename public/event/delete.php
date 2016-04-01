@@ -5,14 +5,14 @@ require_once(__DIR__ . '/../../src/Router.php');
 require_once(__DIR__ . '/../../src/HTTPException.php');
 
 $router = new Router();
-$router->on('delete', function ($request, $services) {
+$router->on('post', function ($request, $services) {
 	session_start();
 	$stmt = $services['pdo']->prepare('SELECT `ownerID` FROM `Session` WHERE `id` = :sessionID');
 	$stmt->bindValue('sessionID', session_id(), PDO::PARAM_STR);
 	$stmt->execute();
 	$currentUID = $stmt->fetchColumn(0);
 	if ($currentUID === false) {
-		throw new UnauthroizedException('You must be logged in to delete events.');
+		throw new UnauthorizedException('You must be logged in to delete events.');
 	}
 
 	$request->params->mustHave('id');

@@ -3,7 +3,7 @@
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/../../src/Router.php');
 require_once(__DIR__ . '/../../src/HTTPException.php');
-	
+
 $router  = new Router();
 $router->on('get', function ($request, $services) {
 	session_start();
@@ -12,7 +12,8 @@ $router->on('get', function ($request, $services) {
 			SELECT 
 				`id`, 
 				`username`, 
-				`created` 
+				UNIX_TIMESTAMP(`created`) AS `created`,
+				`admin`
 			FROM `User` 
 			WHERE `id` = (
 				SELECT `ownerID` 
@@ -25,6 +26,9 @@ $router->on('get', function ($request, $services) {
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	if ($result) {
+		$result['id'] = intval($result['id']);
+		$result['created'] = intval($result['created']);
+		$result['admin'] = $result['admin'] !== '0';
 		return $result;
 	} else {
 		throw new UnauthorizedException();
