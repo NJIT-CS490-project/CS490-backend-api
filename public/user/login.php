@@ -35,5 +35,6 @@ $router->on('post', function ($request, $services) {
 		throw new InternalServerException('Failed to register session.');
 	}
 
+	return [ 'sessionID' => session_id() ];
 });
 $router->route();
