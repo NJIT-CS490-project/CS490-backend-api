@@ -7,6 +7,7 @@ class Response {
   const RES_CODE_INTERNAL_SERVER_ERROR = 500;
 	const RES_CODE_BAD_REQUEST           = 400;
 	const RES_CODE_UNAUTHORIZED          = 401;
+	const RES_CODE_NOT_FOUND             = 404;
 	const RES_CODE_CONFLICT              = 409;
 
 	public $code;

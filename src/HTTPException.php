@@ -35,8 +35,8 @@ class HTTPException extends Exception implements Serializable {
 }
 
 class ParameterNotFoundException extends HTTPException {
-		protected static $defaultCode    = Response::RES_CODE_BAD_REQUEST;
-		protected static $defaultMessage = 'Parameter not found.';
+	protected static $defaultCode    = Response::RES_CODE_BAD_REQUEST;
+	protected static $defaultMessage = 'Parameter not found.';
 }
 
 class ConflictExistsException extends HTTPException {
@@ -45,16 +45,21 @@ class ConflictExistsException extends HTTPException {
 }
 
 class MethodNotAllowedException extends HTTPException {
-    protected static $defaultCode    = Response::RES_CODE_METHOD_NOT_ALLOWED;
-    protected static $defaultMessage = 'That method is not allowed.';
+	protected static $defaultCode    = Response::RES_CODE_METHOD_NOT_ALLOWED;
+	protected static $defaultMessage = 'That method is not allowed.';
 }
 
 class InternalServerException extends HTTPException {
-    protected static $defaultCode    = Response::RES_CODE_INTERNAL_SERVER_ERROR;
-    protected static $defaultMessage = 'An error has occurred.';
+	protected static $defaultCode    = Response::RES_CODE_INTERNAL_SERVER_ERROR;
+	protected static $defaultMessage = 'An error has occurred.';
 }
 
 class UnauthorizedException extends HTTPException {
-		protected static $defaultCode    = Response::RES_CODE_UNAUTHORIZED;
-		protected static $defaultMessage = 'You are not authorized to perform that action.';
+	protected static $defaultCode    = Response::RES_CODE_UNAUTHORIZED;
+	protected static $defaultMessage = 'You are not authorized to perform that action.';
+}
+
+class ObjectNotFoundException extends HTTPException {
+	protected static $deefaultCode   = Response::RES_CODE_NOT_FOUND;
+	protected static $defaultMessage = 'Failed to find object.';
 }
