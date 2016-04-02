@@ -4,17 +4,11 @@ require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/../../src/Router.php');
 require_once(__DIR__ . '/../../src/Response.php');
 require_once(__DIR__ . '/../../src/HTTPException.php');
+require_once(__DIR__ . '/../..//src/Session.php');
 
 $router = new Router();
 $router->on('post', function ($request, $services) {
-	session_start();
-	$stmt = $services['pdo']->prepare('SELECT `ownerID` FROM `Session` WHERE `id` = :sessionID');
-	$stmt->bindValue('sessionID', session_id(), PDO::PARAM_STR);
-	$stmt->execute();
-	$currentUID = $stmt->fetchColumn(0);
-	if ($currentUID === false) {
-		throw new UnauthorizedException('You are not allowed to create events.');
-	}
+	$currentUID = Session::getCurrentUserID($services, true, 'You must be logged in to create an event.');
 
 	$request->params->mustHave('name');
 	$request->params->mustHave('start');
