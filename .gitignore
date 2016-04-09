@@ -1,6 +1,6 @@
 config.json
 
-/vendor/
+node_modules
 
 *~
 *.swp

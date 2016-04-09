@@ -1,0 +1,24 @@
+{
+  "name": "cs-490-backend",
+  "version": "1.0.0",
+  "description": "All requests should start with the following base url: ``https://web.njit.edu/~mjc55/CS490/public/``",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NJIT-CS490-project/CS490-backend-api.git"
+  },
+  "author": "Matthew Cifelli",
+  "bugs": {
+    "url": "https://github.com/NJIT-CS490-project/CS490-backend-api/issues"
+  },
+  "homepage": "https://github.com/NJIT-CS490-project/CS490-backend-api#readme",
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  }
+}
