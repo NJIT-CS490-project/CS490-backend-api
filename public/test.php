@@ -1,13 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../config.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+require_once(__DIR__ . '/../autoload.php');
 
-require_once(__DIR__ . '/../src/Request.php');
-require_once(__DIR__ . '/../src/Map.php');
-
-$request = Request::generate();
-echo json_encode($request);
-
-$map = new Map([
-    'foo' => 'bar'
-]);

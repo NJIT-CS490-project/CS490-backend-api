@@ -19,17 +19,12 @@ class Router {
         $errorHandlers = array()
     ) {
         $this->services = array_merge($services, $this->services);
-				$this->loadServices();
         $this->handlers = array_merge($handlers, $this->handlers);
     }
 
-    public function registerService ($name, $service) {
+    public function register ($name, $service) {
         $this->services[$name] = $service;
     }
-
-		public function loadServices () {
-			$this->registerService('pdo', Database::generate());
-		}
 
     public function on ($method, $handler) {
         $this->handlers[$method] = $handler;
@@ -67,6 +62,8 @@ class Router {
         foreach ($response->headers as $key => $value) {
             header($key . ':' . $value);
         }
+
+				header('Content-Type: application/json; charset=UTF-8');
 
         echo $this->encodeResponse($response);
     }

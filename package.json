@@ -19,6 +19,13 @@
   },
   "homepage": "https://github.com/NJIT-CS490-project/CS490-backend-api#readme",
   "devDependencies": {
-    "mocha": "^2.4.5"
+    "gulp": "^3.9.1",
+    "gulp-changed": "^1.3.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-help": "^1.6.1",
+    "mocha": "^2.4.5",
+    "run-sequence": "^1.1.5",
+    "should": "^8.3.0",
+    "supertest": "^1.2.0"
   }
 }
