@@ -7,8 +7,8 @@ $app->on('get', function ($request, $services) {
 			`id`, 
 			`name`, 
 			`ownerID`, 
-			UNIX_TIMESTAMP(`start`) AS `start`, 
-			UNIX_TIMESTAMP(`end`) AS `end`, 
+			`start` AS `start`, 
+			`end` AS `end`, 
 			`location`
 		FROM `Event` 
 		ORDER BY `id` ASC');
@@ -20,8 +20,6 @@ $app->on('get', function ($request, $services) {
 	foreach ($result as &$event) {
 		$event['id']      = intval($event['id']);
 		$event['ownerID'] = intval($event['ownerID']);
-		$event['start']   = intval($event['start']);
-		$event['end']     = intval($event['end']);
 	}
 	return $result;
 });
