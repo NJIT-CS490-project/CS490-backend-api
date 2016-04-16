@@ -1,10 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../../src/Router.php');
-
-$router = new Router();
-$router->on('get', function ($request, $services) {
+$app = require(__DIR__ . '/../../app.php');
+$app->on('get', function ($request, $services) {
 	$stmt = $services['pdo']->prepare('
 		SELECT 
 			`id`, 
@@ -28,4 +25,4 @@ $router->on('get', function ($request, $services) {
 	}
 	return $result;
 });
-$router->route();
+$app->route();

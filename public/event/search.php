@@ -1,12 +1,9 @@
 <?php
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../../src/Router.php');
-require_once(__DIR__ . '/../../src/HTTPException');
+$app = require(__DIR__ . '/../../app.php');
+$app->on('get', function ($request, $services) {
 
-$router = new Router();
-$router->on('get', function ($request, $services) {
-
+	$request->params->mustHave('query');
 	$sql = '
 	SELECT 
 		`id`, 
@@ -16,17 +13,23 @@ $router->on('get', function ($request, $services) {
 		`end`, 
 		`location` 
 	FROM `Event` 
-	WHERE `name` LIKE "%:query%"';
+	WHERE `name` LIKE :query';
 
+	$query = $request->params['query'];
+	$query = str_replace('%', '\%', $query);
+	if (!$request->params->get('matchWord', false)) {
+		$query = "%$query%";
+	}
+	
 	$stmt = $services['pdo']->prepare($sql);
-	$stmt->bindValue('query', $request['query'], PDO::PARAM_STR);
+	$stmt->bindValue('query', $query, PDO::PARAM_STR);
 	$stmt->execute();
 
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	if ($result) {
+	if ($result !== false) {
 		return $result;
 	} else {
-		throw new InternalServerError('Failed to search events.');
+		throw new InternalServerException('Failed to search events.');
 	}
 });
-$router->route();
+$app->route();

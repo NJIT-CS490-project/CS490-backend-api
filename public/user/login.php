@@ -1,6 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
 $app = require(__DIR__ . '/../../app.php');
 $app->on('post', function ($request, $services) {
 		
@@ -59,4 +58,4 @@ $app->on('post', function ($request, $services) {
 
 	return [ 'sessionID' => session_id() ];
 });
-$router->route();
+$app->route();

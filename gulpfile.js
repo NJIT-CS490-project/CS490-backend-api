@@ -44,8 +44,12 @@ gulp.task('build', 'Builds the project into the build directory', [
 	'build-app'
 ]);
 
-gulp.task('rebuild', 'Rebuilds the project.', ['clean'], (callback) => {
+gulp.task('rebuild', 'Rebuilds the project.', (callback) => {
 	sequence('clean', 'build', callback);
+});
+
+gulp.task('dev', false, (callback) => {
+	sequence('clean', 'build', 'watch', callback);
 });
 
 gulp.task('watch', 'Watches the project and builds when changes occur', () => {

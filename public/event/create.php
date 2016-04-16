@@ -1,13 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../../src/Router.php');
-require_once(__DIR__ . '/../../src/Response.php');
-require_once(__DIR__ . '/../../src/HTTPException.php');
-require_once(__DIR__ . '/../..//src/Session.php');
-
-$router = new Router();
-$router->on('post', function ($request, $services) {
+$app = require(__DIR__ . '/../../app.php');
+$app->on('post', function ($request, $services) {
 	$currentUID = Session::getCurrentUserID($services, true, 'You must be logged in to create an event.');
 
 	$request->params->mustHave('name');
@@ -40,4 +34,4 @@ $router->on('post', function ($request, $services) {
 		return new Response('', 304);
 	}
 });
-$router->route();
+$app->route();

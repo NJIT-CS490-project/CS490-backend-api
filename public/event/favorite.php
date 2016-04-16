@@ -1,14 +1,13 @@
 <?php
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../../src/Router.php');
-require_once(__DIR__ . '/../../src/Response.php');
-require_once(__DIR__ . '/../../src/HTTPException.php');
-
-$router = new Router();
-$router->on('post', function ($request, $services) {
+$app = require(__DIR__ . '/../../app.php');
+$app->on('post', function ($request, $services) {
 	session_start();
-	$stmt = $services['pdo']->prepare('SELECT `ownerID` FROM `Session` WHERE `id` = :sessionID');
+	$stmt = $services['pdo']->prepare('
+		SELECT `ownerID` 
+		FROM `Session` 
+		WHERE `id` = :sessionID
+	');
 	$stmt->bindValue('sessionID', session_id(), PDO::PARAM_STR);
 	$stmt->execute();
 	$currentUserID = $stmt->fetchColumn(0);
@@ -19,13 +18,13 @@ $router->on('post', function ($request, $services) {
 
 	$request->params->mustHave('eventID');
 	$stmt = $services['pdo']->prepare('
-			INSERT IGNORE INTO `EventFavorites` (
-				`eventID`,
-				`userID`
-			) VALUES (
-				:eventID,
-				:userID
-			)
+		INSERT IGNORE INTO `EventFavorites` (
+			`eventID`,
+			`userID`
+		) VALUES (
+			:eventID,
+			:userID
+		)
 	');
 	$stmt->bindValue('eventID', $request->params['eventID'], PDO::PARAM_INT);
 	$stmt->bindValue('userID',  $currentUserID,              PDO::PARAM_INT);
@@ -40,4 +39,4 @@ $router->on('post', function ($request, $services) {
 		return new Response('', 304);
 	}
 });
-$router->route();
+$app->route();

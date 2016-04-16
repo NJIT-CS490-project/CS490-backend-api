@@ -1,11 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../../src/Router.php');
-require_once(__DIR__ . '/../../src/HTTPException.php');
-
-$router  = new Router();
-$router->on('get', function ($request, $services) {
+$app = require(__DIR__ . '/../../app.php');
+$app->on('get', function ($request, $services) {
 	session_start();
 
 	$stmt = $services['pdo']->prepare('
@@ -34,4 +30,4 @@ $router->on('get', function ($request, $services) {
 		throw new UnauthorizedException();
 	}
 });
-$router->route();
+$app->route();

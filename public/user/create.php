@@ -1,11 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/../../src/Router.php');
-require_once(__DIR__ . '/../../src/HTTPException.php');
-
-$router = new Router();
-$router->on('post', function ($request, $services) {
+$app = require(__DIR__ . '/../../app.php');
+$app->on('post', function ($request, $services) {
 	$request->params->mustHave('username');
 	$request->params->mustHave('password');
 
@@ -24,5 +20,5 @@ $router->on('post', function ($request, $services) {
 	  throw new ConflictExistsException('Username taken.');
 	}
 });
-$router->route();
+$app->route();
 
