@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+
 $app = require(__DIR__ . '/../../app.php');
 $app->on('get', function ($request, $services) {
 
@@ -21,15 +23,35 @@ $app->on('get', function ($request, $services) {
 	';
 
 	$hasQuery = $request->params->has('query') && $request->params['query'] !== '';
+	$conditions = [];
 
 	if ($hasQuery) {
-		$sql .= ' WHERE `name` LIKE :query';
+		$conditions []= '`name` LIKE :query';
 		$query = $request->params['query'];
 		$query = str_replace('%', '\%', $query);
 		if (!$request->params->get('matchWord', false)) {
 			$query = "%$query%";
 		}
 	}
+
+	if ($request->params->get('limitToFavorites', false) === 'true') {
+		$conditions []= 'b.`eventID` IS NOT NULL';
+	}
+
+	$conditionString = '';
+	foreach ($conditions as $condition) {
+		var_dump($condition);
+		if ($conditionString === '') {
+			$conditionString .= "WHERE $condition";
+		} else {
+			$conditionString .= " AND $condition";
+		}
+	}
+	if ($conditionString !== '') {
+		$sql .= " $conditionString";
+	}
+
+	var_dump($sql);
 
 	$currentUserID = Session::getCurrentUserID($services);
 	$stmt = $services['pdo']->prepare($sql);
