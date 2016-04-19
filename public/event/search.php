@@ -12,6 +12,8 @@ $app->on('get', function ($request, $services) {
 			a.`start`,
 			a.`end`,
 			a.`location`,
+			a.`building`,
+			a.`room`,
 			a.`fromNJIT`,
 			b.`eventID` IS NOT NULL AS `favorite` 
 		FROM `Event` AS a 
