@@ -15,12 +15,18 @@ $app->on('get', function ($request, $services) {
 			a.`fromNJIT`,
 			b.`eventID` IS NOT NULL AS `favorite` 
 		FROM `Event` AS a 
-		LEFT JOIN ( 
-			SELECT `eventID` 
-			FROM `EventFavorites` 
-			WHERE `userID` = :userID
-		) AS b ON a.`id` = b.`eventID`
 	';
+
+	$currentUserID = Session::getCurrentUserID($services, false);
+	if ($currentUserID !== null) {
+		$sql .= '
+			LEFT JOIN ( 
+				SELECT `eventID` 
+				FROM `EventFavorites` 
+				WHERE `userID` = :userID
+			) AS b ON a.`id` = b.`eventID`
+		';
+	}
 
 	$hasQuery = $request->params->has('query') && $request->params['query'] !== '';
 	$conditions = [];
@@ -40,7 +46,6 @@ $app->on('get', function ($request, $services) {
 
 	$conditionString = '';
 	foreach ($conditions as $condition) {
-		var_dump($condition);
 		if ($conditionString === '') {
 			$conditionString .= "WHERE $condition";
 		} else {
@@ -51,11 +56,11 @@ $app->on('get', function ($request, $services) {
 		$sql .= " $conditionString";
 	}
 
-	var_dump($sql);
-
-	$currentUserID = Session::getCurrentUserID($services);
 	$stmt = $services['pdo']->prepare($sql);
-	$stmt->bindValue('userID', $currentUserID, PDO::PARAM_INT);
+	
+	if ($currentUserID !== null) {
+		$stmt->bindValue('userID', $currentUserID, PDO::PARAM_INT);
+	}
 	if ($hasQuery) {
 		$stmt->bindValue('query', $query, PDO::PARAM_STR);
 	}
