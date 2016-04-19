@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 class Map implements ArrayAccess, Serializable {
 
     private $values = array();
@@ -27,11 +31,16 @@ class Map implements ArrayAccess, Serializable {
     }
 
     public function mustHave ($key) {
-        if ($this->has($key)) {
+			if (gettype($key) === 'array') {
+				foreach ($key as $subkey) {
+					$this->mustHave($subkey);
+				}
+				return null;
+			} else if ($this->has($key)) {
 					return $this->values[$key];
-        } else {
+			} else {
 					throw new ParameterNotFoundException('Failed to find parameter: ' . $key);
-        }
+      }
     }
 
     public function set ($key, $value, $overwrite = true) {
