@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `Session` ( -- : User
 );
 
 CREATE TABLE IF NOT EXISTS `Event` (
-	`id`        INT          NOT NULL,
+	`id`        INT          NOT NULL AUTO_INCREMENT,
 	`updated`   TIMESTAMP,
 	`name`      VARCHAR(255) NOT NULL,
 	`ownerID`   INT          NOT NULL,
