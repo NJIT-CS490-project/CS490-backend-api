@@ -31,12 +31,15 @@ CREATE TABLE IF NOT EXISTS `Session` ( -- : User
 );
 
 CREATE TABLE IF NOT EXISTS `Event` (
-	`id`        INT          NOT NULL AUTO_INCREMENT,
+	`id`        INT          NOT NULL,
+	`updated`   TIMESTAMP,
 	`name`      VARCHAR(255) NOT NULL,
 	`ownerID`   INT          NOT NULL,
 	`start`     TIMESTAMP    NOT NULL,
 	`end`       TIMESTAMP    NOT NULL,
-	`location`  VARCHAR(255) NOT NULL,
+	`location`  VARCHAR(255),
+	`building`  VARCHAR(255),
+	`room`      VARCHAR(255),
 	`fromNJIT`  TINYINT(1)   NOT NULL DEFAULT 0,
 
 	CONSTRAINT `Event_pk`
