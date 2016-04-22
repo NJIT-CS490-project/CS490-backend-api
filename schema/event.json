@@ -1,0 +1,12 @@
+{
+	"id":    "number",
+	"name":  "string",
+	"start": "timestamp",
+	"end":   "timestamp",
+	"description": "string",
+	"location": "string",
+	"building": "string",
+	"room": "string",
+	"favorite": "boolean",
+	"ownerID": ":"
+}

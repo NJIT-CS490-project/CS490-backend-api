@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 	UNIQUE KEY (`username`)
 );
 
+INSERT INTO `User` (`username`,`password`) VALUES ('njit', '');
+
 CREATE TABLE IF NOT EXISTS `Session` ( -- : User
 	`id`         VARCHAR(255) NOT NULL,
 	`ownerID`    INT          NOT NULL, -- : User.id
@@ -41,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `Event` (
 	`building`  VARCHAR(255),
 	`room`      VARCHAR(255),
 	`fromNJIT`  TINYINT(1)   NOT NULL DEFAULT 0,
+	`description` VARCHAR(255),
 
 	CONSTRAINT `Event_pk`
 		PRIMARY KEY (`id`),
